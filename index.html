@@ -4,500 +4,383 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>JARVIS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--c:#00ffe7;--c2:#00b8a4;--c3:rgba(0,255,231,0.12);--c4:rgba(0,255,231,0.06);--gold:#ffd166;--red:#ff4d6d;--green:#06ffa5;--amber:#ffb703;--violet:#c77dff;--rose:#ff6b9d;--sky:#60dfff;--bg:#030d0b;--s2:rgba(0,40,34,0.8);--bd:rgba(0,255,231,0.18);--bd2:rgba(0,255,231,0.4);--txt:#b8fff8;--txt2:rgba(184,255,248,0.5)}
-html,body,#root{height:100%;width:100%;overflow:hidden;background:var(--bg)}
-body{font-family:'Barlow',sans-serif;color:var(--txt)}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
-.shell{position:relative;height:100dvh;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse 70% 35% at 50% -5%,rgba(0,255,231,0.09) 0%,transparent 70%),var(--bg)}
-.shell::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(0,255,231,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,231,0.025) 1px,transparent 1px);background-size:36px 36px}
-.hdr{position:relative;z-index:15;display:flex;align-items:center;justify-content:space-between;padding:11px 16px 9px;border-bottom:1px solid var(--bd);background:rgba(3,13,11,0.93);backdrop-filter:blur(12px)}
-.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:14px;letter-spacing:5px;color:var(--c);text-shadow:0 0 18px rgba(0,255,231,0.5)}
-.hdr-badge{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--c2);background:var(--c4);border:1px solid var(--bd);border-radius:4px;padding:3px 7px}
-.tabs{position:relative;z-index:12;display:flex;gap:2px;padding:7px 10px;background:rgba(3,13,11,0.7);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:5px 11px;border-radius:6px;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1.5px;font-weight:600;color:var(--txt2);background:transparent;border:1px solid transparent;cursor:pointer;transition:all 0.2s;white-space:nowrap}
-.tab.active{color:var(--c);background:var(--c3);border-color:var(--bd2)}
-.content{flex:1;overflow-y:auto;position:relative;z-index:5;padding:10px 12px 80px}
-.card{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:0.3}
-.sec-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--c2);margin-bottom:8px}
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
-.stat-box{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:8px 5px;text-align:center}
-.stat-num{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--c)}
-.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt2);margin-top:2px}
-.bot-card{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden;transition:border-color 0.2s}
-.bot-card.running::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--green),transparent)}
-.bot-card.stopped::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red)}
-.bot-card.paused::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--amber)}
-.bot-top{display:flex;align-items:flex-start;gap:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--c:#00ffe7;--c2:#00b8a4;--bg:#030d0b;--bd:rgba(0,255,231,0.18);--txt:#b8fff8;--txt2:rgba(184,255,248,0.5);--s2:rgba(0,40,34,0.8);--green:#06ffa5;--red:#ff4d6d;--amber:#ffb703;--violet:#c77dff}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:sans-serif}
+.shell{max-width:430px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;background:radial-gradient(ellipse 70% 35% at 50% -5%,rgba(0,255,231,0.09),transparent),var(--bg)}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd);background:rgba(3,13,11,0.93)}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:14px;letter-spacing:5px;color:var(--c);text-shadow:0 0 18px rgba(0,255,231,0.4)}
+.badge{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--c2);background:rgba(0,255,231,0.06);border:1px solid var(--bd);border-radius:4px;padding:3px 7px}
+.tabs{display:flex;gap:2px;padding:7px 10px;background:rgba(3,13,11,0.7);border-bottom:1px solid var(--bd);overflow-x:auto}
+.tab{flex:0 0 auto;padding:5px 11px;border-radius:6px;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1.5px;color:var(--txt2);border:1px solid transparent;cursor:pointer;white-space:nowrap;background:none}
+.tab.active{color:var(--c);background:rgba(0,255,231,0.1);border-color:rgba(0,255,231,0.4)}
+.content{flex:1;overflow-y:auto;padding:12px 12px 80px}
+.card{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:8px}
+.sec{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--c2);margin-bottom:8px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.stat{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:8px 5px;text-align:center}
+.stat-n{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--c)}
+.stat-l{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt2);margin-top:2px}
+.bot{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden}
+.bot.running::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--green),transparent)}
+.bot.paused::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--amber)}
+.bot.stopped::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red)}
+.bot-row{display:flex;gap:10px;align-items:flex-start}
 .bot-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.bot-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--txt)}
+.bot-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700}
 .bot-type{font-family:'Share Tech Mono',monospace;font-size:9px;margin-top:2px}
-.ctrl-btn{width:26px;height:26px;border-radius:5px;border:1px solid var(--bd);background:var(--c4);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
-.bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-top:8px}
-.bar-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
-.alert-item{display:flex;gap:8px;align-items:flex-start;background:var(--c4);border:1px solid var(--bd);border-radius:7px;padding:8px 10px;margin-bottom:5px}
-.alert-text{font-size:12px;color:var(--txt);line-height:1.4}
+.ctrls{display:flex;gap:4px}
+.ctrl{width:26px;height:26px;border-radius:5px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
+.bar-wrap{margin-top:8px}
+.bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width 0.6s}
+.alert{display:flex;gap:8px;background:rgba(0,255,231,0.04);border:1px solid var(--bd);border-radius:7px;padding:8px 10px;margin-bottom:5px}
+.alert-txt{font-size:12px;line-height:1.4}
 .alert-time{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt2);margin-top:2px}
-.msg{display:flex;gap:8px;margin-bottom:10px;animation:slideIn 0.2s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msgs{flex:1;overflow-y:auto;padding-bottom:8px}
+.msg{display:flex;gap:8px;margin-bottom:10px}
 .msg.user{flex-direction:row-reverse}
-.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'Orbitron',monospace;font-weight:700;border:1px solid var(--bd2);background:var(--c4);color:var(--c)}
-.msg.user .msg-av{background:rgba(199,125,255,0.15);border-color:rgba(199,125,255,0.5);color:var(--violet)}
-.msg-bubble{max-width:78%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.55;color:var(--txt)}
-.msg.user .msg-bubble{background:rgba(199,125,255,0.08);border-color:rgba(199,125,255,0.25)}
-.chat-input{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--txt);font-family:'Barlow',sans-serif;font-size:13px;resize:none;outline:none;max-height:80px}
-.chat-input:focus{border-color:var(--bd2)}
-.send-btn{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--c),var(--c2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.send-btn:disabled{opacity:0.4}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;border:1px solid rgba(0,255,231,0.4);background:rgba(0,255,231,0.06);color:var(--c);flex-shrink:0}
+.msg.user .av{background:rgba(199,125,255,0.15);border-color:rgba(199,125,255,0.5);color:var(--violet)}
+.bubble{max-width:78%;background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.5}
+.msg.user .bubble{background:rgba(199,125,255,0.08);border-color:rgba(199,125,255,0.25)}
+.chat-bar{display:flex;gap:6px;align-items:center;padding-top:10px;border-top:1px solid var(--bd)}
+.chat-in{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--txt);font-size:13px;outline:none}
+.chat-in:focus{border-color:rgba(0,255,231,0.4)}
+.send{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--c),var(--c2));border:none;cursor:pointer;font-size:15px;flex-shrink:0}
+.send:disabled{opacity:0.4}
+.bnav{position:absolute;bottom:0;left:0;right:0;display:flex;border-top:1px solid var(--bd);background:rgba(3,13,11,0.95)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 12px;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--txt2);background:none;border:none}
+.bnav-btn.active{color:var(--c)}
+.bnav-icon{font-size:18px;line-height:1}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,255,231,0.12),transparent);pointer-events:none;z-index:999;animation:scan 5s linear infinite;opacity:0.4}
+@keyframes scan{from{top:0}to{top:100%}}
+.habit{background:rgba(0,255,231,0.04);border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer;position:relative}
+.habit.done{border-color:rgba(6,255,165,0.5);background:rgba(6,255,165,0.07)}
+.mood-btn{padding:6px 10px;border-radius:20px;border:1px solid var(--bd);background:rgba(0,255,231,0.04);cursor:pointer;font-size:12px;display:inline-flex;align-items:center;gap:4px;margin:3px}
+.mood-btn.sel{border-color:rgba(199,125,255,0.5);background:rgba(199,125,255,0.1)}
+.inp{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:8px 10px;color:var(--txt);font-size:12px;outline:none;flex:1}
+.inp:focus{border-color:rgba(0,255,231,0.4)}
+.log-btn{padding:8px 12px;border-radius:7px;border:1px solid rgba(0,255,231,0.4);background:rgba(0,255,231,0.08);color:var(--c);font-family:'Orbitron',monospace;font-size:9px;cursor:pointer;white-space:nowrap}
+.row{display:flex;gap:6px;margin-top:6px}
+.affirm{background:linear-gradient(135deg,rgba(199,125,255,0.1),rgba(96,223,255,0.06));border:1px solid rgba(199,125,255,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:10px}
 .think{display:flex;gap:3px;align-items:center;padding:4px 0}
-.think span{width:5px;height:5px;border-radius:50%;background:var(--c2);animation:th 1s infinite}
+.think span{width:5px;height:5px;border-radius:50%;background:var(--c2);animation:th 1s infinite;display:inline-block}
 .think span:nth-child(2){animation-delay:0.2s}
 .think span:nth-child(3){animation-delay:0.4s}
 @keyframes th{0%,80%,100%{transform:scale(0.6);opacity:0.3}40%{transform:scale(1);opacity:1}}
-.habit-item{background:var(--c4);border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer;transition:all 0.2s;position:relative}
-.habit-item.done{border-color:rgba(6,255,165,0.5);background:rgba(6,255,165,0.07)}
-.mood-pill{padding:6px 10px;border-radius:20px;border:1px solid var(--bd);background:var(--c4);cursor:pointer;font-size:12px;transition:all 0.2s;display:inline-flex;align-items:center;gap:4px;margin:3px}
-.mood-pill.sel{border-color:rgba(199,125,255,0.6);background:rgba(199,125,255,0.12)}
-.affirm-card{background:linear-gradient(135deg,rgba(199,125,255,0.1),rgba(96,223,255,0.06));border:1px solid rgba(199,125,255,0.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:10px}
-.log-input{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:8px 10px;color:var(--txt);font-family:'Barlow',sans-serif;font-size:12px;outline:none}
-.log-input:focus{border-color:var(--bd2)}
-.log-btn{padding:8px 12px;border-radius:7px;border:1px solid var(--bd2);background:var(--c3);color:var(--c);font-family:'Orbitron',monospace;font-size:9px;cursor:pointer;white-space:nowrap}
-.submit-btn{padding:13px;border-radius:9px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--c),var(--c2));font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;font-weight:700;color:var(--bg);width:100%;margin-top:8px}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.field label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--c2)}
-.field input,.field select,.field textarea{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:9px 12px;color:var(--txt);font-family:'Barlow',sans-serif;font-size:13px;outline:none;width:100%}
-.field select option{background:#0a2420}
-.field textarea{resize:none;height:70px}
-.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,255,231,0.12),transparent);pointer-events:none;z-index:999;animation:scan 5s linear infinite;opacity:0.4}
-@keyframes scan{from{top:0}to{top:100%}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.dot-on{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite;display:inline-block}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel" data-presets="react">
-const {useState,useEffect,useRef,useCallback} = React;
+<div class="scanline"></div>
+<div class="shell" id="app">
+  <div class="hdr">
+    <div class="logo">J.A.R.V.I.S.</div>
+    <div class="badge" id="clock">--:--</div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="content" id="content"></div>
+  <nav class="bnav" id="bnav"></nav>
+</div>
 
-const INIT_BOTS = [
-  {id:1,name:"ALPHA TRADER",type:"trading",emoji:"📈",status:"running",platform:"Freqtrade",desc:"BTC/ETH swing strategy",health:78,color:"#ffd166",bg:"rgba(255,209,102,0.12)",stats:[{v:"+£342",l:"P&L"},{v:"84",l:"Trades"},{v:"67%",l:"Win Rate"}]},
-  {id:2,name:"SOCIAL HAWK",type:"social",emoji:"🦅",status:"running",platform:"Custom API",desc:"Twitter/X engagement",health:91,color:"#c77dff",bg:"rgba(199,125,255,0.12)",stats:[{v:"24",l:"Posts"},{v:"4.2K",l:"Reach"},{v:"61",l:"Replies"}]},
-  {id:3,name:"SUPPORT BOT",type:"service",emoji:"🤝",status:"paused",platform:"ManyChat",desc:"Customer service auto",health:55,color:"#06ffa5",bg:"rgba(6,255,165,0.12)",stats:[{v:"12",l:"Open"},{v:"89%",l:"Solved"},{v:"4.7★",l:"CSAT"}]},
-  {id:4,name:"DATA SPIDER",type:"scraper",emoji:"🕷️",status:"stopped",platform:"Custom",desc:"Price monitor",health:0,color:"#ff9f1c",bg:"rgba(255,159,28,0.12)",stats:[{v:"0",l:"Scraped"},{v:"8",l:"Sources"},{v:"14K",l:"Records"}]},
-];
+<script>
+const $ = id => document.getElementById(id);
 
-const INIT_ALERTS = [
-  {id:1,icon:"✅",text:"ALPHA TRADER: Take-profit triggered on ETH at £2,341",time:"2 min ago",col:"rgba(6,255,165,0.3)"},
-  {id:2,icon:"⚠️",text:"SUPPORT BOT: Queue depth >10. Consider resuming.",time:"8 min ago",col:"rgba(255,183,3,0.3)"},
-  {id:3,icon:"🔴",text:"DATA SPIDER: Connection timeout on source #3",time:"15 min ago",col:"rgba(255,77,109,0.3)"},
-];
+// ── State ──────────────────────────────────────────────────────────
+let state = {
+  tab: 'dash',
+  bots: [
+    {id:1,name:'ALPHA TRADER',type:'TRADING',emoji:'📈',status:'running',platform:'Freqtrade',desc:'BTC/ETH swing',health:78,color:'#ffd166',bg:'rgba(255,209,102,0.12)',stats:[{v:'+£342',l:'P&L'},{v:'84',l:'Trades'},{v:'67%',l:'Win%'}]},
+    {id:2,name:'SOCIAL HAWK',type:'SOCIAL',emoji:'🦅',status:'running',platform:'Custom API',desc:'Twitter engagement',health:91,color:'#c77dff',bg:'rgba(199,125,255,0.12)',stats:[{v:'24',l:'Posts'},{v:'4.2K',l:'Reach'},{v:'61',l:'Replies'}]},
+    {id:3,name:'SUPPORT BOT',type:'SERVICE',emoji:'🤝',status:'paused',platform:'ManyChat',desc:'Customer service',health:55,color:'#06ffa5',bg:'rgba(6,255,165,0.12)',stats:[{v:'12',l:'Open'},{v:'89%',l:'Solved'},{v:'4.7★',l:'CSAT'}]},
+    {id:4,name:'DATA SPIDER',type:'SCRAPER',emoji:'🕷️',status:'stopped',platform:'Custom',desc:'Price monitor',health:0,color:'#ff9f1c',bg:'rgba(255,159,28,0.12)',stats:[{v:'0',l:'Scraped'},{v:'8',l:'Sources'},{v:'14K',l:'Records'}]},
+  ],
+  alerts: [
+    {id:1,icon:'✅',text:'ALPHA TRADER: Take-profit on ETH at £2,341',time:'2 min ago'},
+    {id:2,icon:'⚠️',text:'SUPPORT BOT: Queue depth >10',time:'8 min ago'},
+    {id:3,icon:'🔴',text:'DATA SPIDER: Connection timeout',time:'15 min ago'},
+  ],
+  msgs: [{role:'j',text:'All systems online, sir. What needs attention?'}],
+  mood: '',
+  steps: 6400,
+  water: 1.5,
+  medStreak: 7,
+  intention: '',
+  habits: [
+    {name:'COLD SHOWER',emoji:'🚿',done:false,streak:5},
+    {name:'NO PHONE AM',emoji:'📵',done:true,streak:3},
+    {name:'READ 20MIN',emoji:'📚',done:false,streak:12},
+    {name:'EXERCISE',emoji:'💪',done:true,streak:8},
+    {name:'MEDITATE',emoji:'🧘',done:false,streak:2},
+    {name:'JOURNAL',emoji:'✍️',done:false,streak:1},
+  ],
+  journal: [],
+  gratitude: [],
+  affIdx: 0,
+  aiLoading: false,
+};
 
 const AFFIRMATIONS = [
-  "I am building an empire from the inside out. My discipline today is my legacy tomorrow.",
-  "My mind is sharp, my body is strong, my spirit is unshakeable.",
-  "I operate with purpose. I rest with intention. I rise with gratitude.",
-  "I am not chasing success — I am becoming the kind of person success finds.",
-  "Every system I build reflects the order within me.",
+  '"I am building an empire from the inside out."',
+  '"My mind is sharp, my body is strong, my spirit is unshakeable."',
+  '"I operate with purpose. I rest with intention."',
+  '"Every system I build reflects the order within me."',
+  '"I am becoming the kind of person success finds."',
 ];
 
-const REFLECTIONS = [
-  "What drained your energy today, and how can you protect against it tomorrow?",
-  "Name one thing you're grateful for that you usually take for granted.",
-  "What would you tell yourself 5 years ago?",
-  "Where are you making progress that you haven't acknowledged yet?",
-];
+const NAV = [{k:'dash',i:'⬡',l:'HQ'},{k:'brain',i:'◈',l:'JARVIS'},{k:'self',i:'◉',l:'SELF'},{k:'create',i:'⊕',l:'DEPLOY'},{k:'alerts',i:'△',l:'ALERTS'}];
 
-function timeNow(){return new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}
-function dateNow(){return new Date().toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}
+// ── Clock ──────────────────────────────────────────────────────────
+function tick(){
+  $('clock').textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+tick(); setInterval(tick,10000);
 
-async function askJarvis(messages, bots, self) {
-  const system = `You are J.A.R.V.I.S. — personal AI managing a bot fleet and personal development.
-Bots: ${JSON.stringify(bots.map(b=>({name:b.name,status:b.status,health:b.health})))}
-Personal: mood=${self.mood||"unknown"}, steps=${self.steps}, medStreak=${self.medStreak}
-Personality: precise, dry wit, address user as "sir". Be concise.
-To control a bot end with [ACTION:{"botId":N,"action":"start|pause|stop"}]`;
-  const r = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system,messages})
+// ── Render helpers ─────────────────────────────────────────────────
+function dateStr(){return new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+
+function hc(h){return h>70?'var(--green)':h>30?'var(--amber)':'var(--red)'}
+
+function botHTML(b){
+  const run = b.status==='running', pause=b.status==='paused';
+  return `
+  <div class="bot ${b.status}">
+    <div class="bot-row">
+      <div class="bot-icon" style="background:${b.bg}">${b.emoji}</div>
+      <div style="flex:1">
+        <div class="bot-name">${b.name}</div>
+        <div class="bot-type" style="color:${b.color}">${b.type} · ${b.platform}</div>
+        <div style="font-size:10px;color:var(--txt2);margin-top:2px">${b.desc}</div>
+      </div>
+      <div class="ctrls">
+        ${!run?`<div class="ctrl" style="color:var(--green);border-color:rgba(6,255,165,0.4)" onclick="botCtrl(${b.id},'start')">▶</div>`:''}
+        ${run?`<div class="ctrl" style="color:var(--amber);border-color:rgba(255,183,3,0.4)" onclick="botCtrl(${b.id},'pause')">⏸</div>`:''}
+        ${b.status!=='stopped'?`<div class="ctrl" style="color:var(--red);border-color:rgba(255,77,109,0.4)" onclick="botCtrl(${b.id},'stop')">⏹</div>`:''}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
+      ${b.stats.map(s=>`<div style="background:rgba(0,255,231,0.06);border-radius:6px;padding:6px 8px"><div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:${b.color}">${s.v}</div><div style="font-size:9px;color:var(--txt2);margin-top:1px">${s.l}</div></div>`).join('')}
+    </div>
+    <div class="bar-wrap">
+      <div class="bar"><div class="bar-fill" style="width:${b.health}%;background:${hc(b.health)}"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt2)">HEALTH</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:${hc(b.health)}">${b.health}%</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Tab renderers ──────────────────────────────────────────────────
+function renderDash(){
+  const r=state.bots.filter(b=>b.status==='running').length;
+  const p=state.bots.filter(b=>b.status==='paused').length;
+  const s=state.bots.filter(b=>b.status==='stopped').length;
+  return `
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">${state.bots.length}</div><div class="stat-l">TOTAL</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--green)">${r}</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--amber)">${p}</div><div class="stat-l">PAUSED</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--red)">${s}</div><div class="stat-l">OFFLINE</div></div>
+  </div>
+  <div class="sec">BOT FLEET</div>
+  ${state.bots.map(botHTML).join('')}
+  <div class="sec" style="margin-top:8px">LIVE ALERTS</div>
+  ${state.alerts.map(a=>`<div class="alert"><div style="font-size:13px;flex-shrink:0">${a.icon}</div><div><div class="alert-txt">${a.text}</div><div class="alert-time">${a.time}</div></div></div>`).join('')}`;
+}
+
+function renderBrain(){
+  const msgs = state.msgs.map(m=>`
+    <div class="msg ${m.role==='u'?'user':''}">
+      <div class="av">${m.role==='u'?'K':'J'}</div>
+      <div class="bubble">${m.text}</div>
+    </div>`).join('');
+  const loading = state.aiLoading?`<div class="msg"><div class="av">J</div><div class="bubble"><div class="think"><span></span><span></span><span></span></div></div></div>`:'';
+  return `
+  <div style="height:calc(100dvh - 200px);display:flex;flex-direction:column">
+    <div class="msgs" id="msgs-list">${msgs}${loading}<div id="msgs-end"></div></div>
+    <div class="chat-bar">
+      <input class="chat-in" id="chat-inp" placeholder="Command Jarvis..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send" onclick="sendMsg()" ${state.aiLoading?'disabled':''}>➤</button>
+    </div>
+  </div>`;
+}
+
+function renderSelf(){
+  const sub = state.selfSub||'body';
+  const tabs = `<div style="display:flex;gap:4px;margin-bottom:12px">
+    ${[['body','💪 BODY'],['mind','🧠 MIND'],['spirit','✨ SPIRIT']].map(([k,l])=>`
+    <div onclick="setSelfSub('${k}')" style="flex:1;padding:7px 4px;text-align:center;border-radius:7px;cursor:pointer;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;background:${sub===k?'rgba(199,125,255,0.12)':'rgba(0,255,231,0.06)'};border:1px solid ${sub===k?'rgba(199,125,255,0.5)':'var(--bd)'};color:${sub===k?'var(--violet)':'var(--txt2)'}">${l}</div>`).join('')}
+  </div>`;
+
+  let body='';
+  if(sub==='body') body=`
+    <div class="card">
+      <div class="sec">STEPS · ${(state.steps/1000).toFixed(1)}k / 10k</div>
+      <div class="bar"><div class="bar-fill" style="width:${Math.min(state.steps/10000*100,100)}%;background:var(--green)"></div></div>
+      <div class="row"><button onclick="state.steps=Math.max(0,state.steps-1000);render()" style="flex:1;padding:8px;border-radius:6px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);color:var(--c);cursor:pointer;font-family:'Orbitron',monospace;font-size:10px">−1k</button><button onclick="state.steps+=1000;render()" style="flex:1;padding:8px;border-radius:6px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);color:var(--c);cursor:pointer;font-family:'Orbitron',monospace;font-size:10px">+1k</button></div>
+    </div>
+    <div class="card">
+      <div class="sec">WATER · ${state.water}L / 2.5L</div>
+      <div class="bar"><div class="bar-fill" style="width:${Math.min(state.water/2.5*100,100)}%;background:var(--sky,#60dfff)"></div></div>
+      <div class="row"><button onclick="state.water=Math.max(0,parseFloat((state.water-0.25).toFixed(2)));render()" style="flex:1;padding:8px;border-radius:6px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);color:var(--c);cursor:pointer;font-family:'Orbitron',monospace;font-size:10px">−250ml</button><button onclick="state.water=parseFloat((state.water+0.25).toFixed(2));render()" style="flex:1;padding:8px;border-radius:6px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);color:var(--c);cursor:pointer;font-family:'Orbitron',monospace;font-size:10px">+250ml</button></div>
+    </div>`;
+
+  if(sub==='mind') body=`
+    <div class="card" style="border-color:rgba(199,125,255,0.3)">
+      <div class="sec" style="color:rgba(199,125,255,0.8)">MOOD</div>
+      <div>${[['😤','Fired Up'],['😌','Calm'],['😊','Good'],['😐','Neutral'],['😔','Low'],['🔥','Motivated']].map(([e,l])=>`<span class="mood-btn ${state.mood===l?'sel':''}" onclick="state.mood='${l}';render()">${e} <span style="font-size:10px;color:var(--txt2)">${l}</span></span>`).join('')}</div>
+      ${state.mood?`<div style="margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--violet)">Current: ${state.mood}</div>`:''}
+    </div>
+    <div class="card" style="border-color:rgba(199,125,255,0.3)">
+      <div class="sec" style="color:rgba(199,125,255,0.8)">HABITS</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+        ${state.habits.map((h,i)=>`<div class="habit ${h.done?'done':''}" onclick="state.habits[${i}].done=!state.habits[${i}].done;render()"><div style="font-size:18px;margin-bottom:3px">${h.emoji}</div><div style="font-family:'Orbitron',monospace;font-size:9px">${h.name}</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt2);margin-top:2px">🔥 ${h.streak}</div>${h.done?'<div style="position:absolute;top:6px;right:8px;font-size:11px;color:var(--green)">✓</div>':''}</div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(199,125,255,0.3)">
+      <div class="sec" style="color:rgba(199,125,255,0.8)">JOURNAL</div>
+      <div class="row"><input class="inp" id="j-inp" placeholder="Write your thoughts..."/><button class="log-btn" style="background:rgba(199,125,255,0.1);border-color:rgba(199,125,255,0.4);color:var(--violet)" onclick="logJournal()">SAVE</button></div>
+      ${state.journal.map(j=>`<div style="background:rgba(0,255,231,0.04);border:1px solid rgba(199,125,255,0.2);border-radius:7px;padding:8px 10px;margin-top:6px"><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt2);margin-bottom:3px">${j.date}</div><div style="font-size:12px">${j.text}</div></div>`).join('')}
+    </div>`;
+
+  if(sub==='spirit') body=`
+    <div class="affirm">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(199,125,255,0.6);margin-bottom:8px">✨ TODAY'S AFFIRMATION</div>
+      <div style="font-size:14px;line-height:1.6;font-style:italic;color:var(--txt)">${AFFIRMATIONS[state.affIdx]}</div>
+      <div onclick="state.affIdx=(state.affIdx+1)%${AFFIRMATIONS.length};render()" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--violet);cursor:pointer;margin-top:8px;display:inline-block;border:1px solid rgba(199,125,255,0.3);padding:3px 10px;border-radius:4px">↻ NEW</div>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,157,0.3)">
+      <div class="sec" style="color:rgba(255,107,157,0.8)">INTENTION</div>
+      <input class="inp" style="width:100%" placeholder="Today I intend to..." value="${state.intention}" oninput="state.intention=this.value"/>
+      ${state.intention?`<div style="margin-top:8px;padding:8px 10px;background:rgba(255,107,157,0.07);border:1px solid rgba(255,107,157,0.25);border-radius:7px;font-size:12px;font-style:italic">🎯 "${state.intention}"</div>`:''}
+    </div>
+    <div class="card" style="border-color:rgba(255,107,157,0.3)">
+      <div class="sec" style="color:rgba(255,107,157,0.8)">MEDITATION STREAK · ${state.medStreak} days</div>
+      <div style="font-family:'Orbitron',monospace;font-size:36px;font-weight:700;color:#ff6b9d;margin-bottom:6px">${state.medStreak}</div>
+      <div class="row"><button onclick="state.medStreak++;render()" style="flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,107,157,0.4);background:rgba(255,107,157,0.1);color:#ff6b9d;cursor:pointer;font-family:'Orbitron',monospace;font-size:9px">✓ LOG SESSION</button><button onclick="state.medStreak=Math.max(0,state.medStreak-1);render()" style="padding:8px 12px;border-radius:6px;border:1px solid var(--bd);background:rgba(0,255,231,0.06);color:var(--txt2);cursor:pointer;font-family:'Orbitron',monospace;font-size:9px">−</button></div>
+    </div>
+    <div class="card" style="border-color:rgba(255,107,157,0.3)">
+      <div class="sec" style="color:rgba(255,107,157,0.8)">GRATITUDE</div>
+      <div class="row"><input class="inp" id="g-inp" placeholder="Today I'm grateful for..."/><button class="log-btn" style="background:rgba(255,107,157,0.1);border-color:rgba(255,107,157,0.4);color:#ff6b9d" onclick="logGrat()">ADD</button></div>
+      ${state.gratitude.map(g=>`<div style="background:rgba(0,255,231,0.04);border:1px solid rgba(255,107,157,0.2);border-radius:7px;padding:8px 10px;margin-top:6px"><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt2);margin-bottom:3px">${g.date}</div><div style="font-size:12px">🙏 ${g.text}</div></div>`).join('')}
+    </div>`;
+
+  return tabs+body;
+}
+
+function renderCreate(){
+  return `
+  <div class="sec">DEPLOY NEW BOT</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px">
+    ${[['trading','📈','#ffd166'],['social','🦅','#c77dff'],['service','🤝','#06ffa5'],['scraper','🕷️','#ff9f1c']].map(([k,e,c])=>`
+    <div onclick="state.newBotType='${k}';render()" style="padding:10px;border-radius:8px;border:1px solid ${(state.newBotType||'trading')===k?'rgba(0,255,231,0.4)':'var(--bd)'};background:${(state.newBotType||'trading')===k?'rgba(0,255,231,0.1)':'rgba(0,255,231,0.04)'};cursor:pointer;text-align:center">
+      <div style="font-size:20px;margin-bottom:4px">${e}</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:${c}">${k.toUpperCase()}</div>
+    </div>`).join('')}
+  </div>
+  <div style="margin-bottom:10px"><div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--c2);margin-bottom:5px">BOT NAME</div><input class="inp" style="width:100%" id="nb-name" placeholder="e.g. MOMENTUM SCALPER"></div>
+  <div style="margin-bottom:10px"><div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--c2);margin-bottom:5px">PLATFORM</div><input class="inp" style="width:100%" id="nb-plat" placeholder="e.g. Freqtrade, ManyChat"></div>
+  <button onclick="deployBot()" style="width:100%;padding:13px;border-radius:9px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--c),var(--c2));font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;font-weight:700;color:#030d0b;margin-top:4px">⚡ DEPLOY BOT</button>`;
+}
+
+function renderAlerts(){
+  return `
+  <div class="sec">SYSTEM ALERTS</div>
+  ${state.alerts.map(a=>`<div class="alert"><div style="font-size:13px;flex-shrink:0">${a.icon}</div><div><div class="alert-txt">${a.text}</div><div class="alert-time">${a.time}</div></div></div>`).join('')}`;
+}
+
+// ── Main render ────────────────────────────────────────────────────
+function render(){
+  // nav
+  $('bnav').innerHTML = NAV.map(n=>`<button class="bnav-btn ${state.tab===n.k?'active':''}" onclick="setTab('${n.k}')"><span class="bnav-icon">${n.i}</span>${n.l}</button>`).join('');
+  $('tabs').innerHTML = NAV.map(n=>`<div class="tab ${state.tab===n.k?'active':''}" onclick="setTab('${n.k}')">${n.i} ${n.l}</div>`).join('');
+
+  // content
+  const map = {dash:renderDash,brain:renderBrain,self:renderSelf,create:renderCreate,alerts:renderAlerts};
+  $('content').innerHTML = (map[state.tab]||renderDash)();
+
+  // scroll chat
+  if(state.tab==='brain'){
+    const e = document.getElementById('msgs-end');
+    if(e) e.scrollIntoView({behavior:'smooth'});
+  }
+}
+
+// ── Actions ────────────────────────────────────────────────────────
+function setTab(t){ state.tab=t; render(); }
+function setSelfSub(s){ state.selfSub=s; render(); }
+
+function botCtrl(id,action){
+  state.bots = state.bots.map(b=>{
+    if(b.id!==id) return b;
+    const n={...b};
+    if(action==='start'){n.status='running';n.health=Math.max(n.health,40);}
+    if(action==='pause') n.status='paused';
+    if(action==='stop'){n.status='stopped';n.health=0;}
+    return n;
   });
-  const d = await r.json();
-  return d.content?.map(b=>b.text||"").join("")||"Systems unavailable, sir.";
+  const icons={start:'▶️',pause:'⏸️',stop:'⏹️'};
+  const labels={start:'started',pause:'paused',stop:'stopped'};
+  const bot=state.bots.find(b=>b.id===id);
+  if(bot) state.alerts.unshift({id:Date.now(),icon:icons[action],text:`${bot.name} ${labels[action]}.`,time:'just now'});
+  render();
 }
 
-function BotCard({bot,onControl}){
-  const hc = bot.health>70?"var(--green)":bot.health>30?"var(--amber)":"var(--red)";
-  return (
-    <div className={`bot-card ${bot.status}`}>
-      <div className="bot-top">
-        <div className="bot-icon" style={{background:bot.bg}}>{bot.emoji}</div>
-        <div style={{flex:1}}>
-          <div className="bot-name">{bot.name}</div>
-          <div className="bot-type" style={{color:bot.color}}>{bot.type.toUpperCase()} · {bot.platform}</div>
-          <div style={{fontSize:10,color:"var(--txt2)",marginTop:2}}>{bot.desc}</div>
-        </div>
-        <div style={{display:"flex",gap:4}}>
-          {bot.status!=="running"&&<div className="ctrl-btn" style={{color:"var(--green)",borderColor:"rgba(6,255,165,0.4)"}} onClick={()=>onControl(bot.id,"start")}>▶</div>}
-          {bot.status==="running"&&<div className="ctrl-btn" style={{color:"var(--amber)",borderColor:"rgba(255,183,3,0.4)"}} onClick={()=>onControl(bot.id,"pause")}>⏸</div>}
-          {bot.status!=="stopped"&&<div className="ctrl-btn" style={{color:"var(--red)",borderColor:"rgba(255,77,109,0.4)"}} onClick={()=>onControl(bot.id,"stop")}>⏹</div>}
-        </div>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginTop:10}}>
-        {bot.stats.map((s,i)=>(
-          <div key={i} style={{background:"var(--c4)",borderRadius:6,padding:"6px 8px"}}>
-            <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:bot.color}}>{s.v}</div>
-            <div style={{fontSize:9,color:"var(--txt2)",marginTop:1}}>{s.l}</div>
-          </div>
-        ))}
-      </div>
-      <div className="bar"><div className="bar-fill" style={{width:`${bot.health}%`,background:hc}}/></div>
-      <div style={{display:"flex",justifyContent:"space-between",marginTop:3}}>
-        <span style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)"}}>HEALTH</span>
-        <span style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:hc}}>{bot.health}%</span>
-      </div>
-    </div>
-  );
+function logJournal(){
+  const inp=document.getElementById('j-inp');
+  if(inp&&inp.value.trim()){
+    state.journal.unshift({text:inp.value,date:new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})});
+    state.journal=state.journal.slice(0,5);
+    render();
+  }
 }
 
-function Dashboard({bots,alerts,onControl}){
-  const r=bots.filter(b=>b.status==="running").length;
-  const p=bots.filter(b=>b.status==="paused").length;
-  const s=bots.filter(b=>b.status==="stopped").length;
-  return (
-    <div>
-      <div className="stat-row">
-        <div className="stat-box"><div className="stat-num">{bots.length}</div><div className="stat-lbl">TOTAL</div></div>
-        <div className="stat-box"><div className="stat-num" style={{color:"var(--green)"}}>{r}</div><div className="stat-lbl">ACTIVE</div></div>
-        <div className="stat-box"><div className="stat-num" style={{color:"var(--amber)"}}>{p}</div><div className="stat-lbl">PAUSED</div></div>
-        <div className="stat-box"><div className="stat-num" style={{color:"var(--red)"}}>{s}</div><div className="stat-lbl">OFFLINE</div></div>
-      </div>
-      <div className="sec-title">BOT FLEET</div>
-      {bots.map(b=><BotCard key={b.id} bot={b} onControl={onControl}/>)}
-      <div className="sec-title" style={{marginTop:8}}>LIVE ALERTS</div>
-      {alerts.map(a=>(
-        <div key={a.id} className="alert-item" style={{borderColor:a.col}}>
-          <div style={{fontSize:13,flexShrink:0}}>{a.icon}</div>
-          <div><div className="alert-text">{a.text}</div><div className="alert-time">{a.time}</div></div>
-        </div>
-      ))}
-    </div>
-  );
+function logGrat(){
+  const inp=document.getElementById('g-inp');
+  if(inp&&inp.value.trim()){
+    state.gratitude.unshift({text:inp.value,date:new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})});
+    state.gratitude=state.gratitude.slice(0,5);
+    render();
+  }
 }
 
-function BrainTab({bots,onBotAction,self}){
-  const [msgs,setMsgs]=useState([{role:"assistant",content:"All systems online, sir. Bot fleet and personal metrics visible. What needs attention?"}]);
-  const [input,setInput]=useState("");
-  const [loading,setLoading]=useState(false);
-  const bottomRef=useRef(null);
-  useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth"})},[msgs,loading]);
-
-  const send=useCallback(async(text)=>{
-    if(!text.trim()||loading)return;
-    const um={role:"user",content:text};
-    const nm=[...msgs,um];
-    setMsgs(nm);setInput("");setLoading(true);
-    try{
-      const reply=await askJarvis(nm.map(m=>({role:m.role,content:m.content})),bots,self);
-      const am=reply.match(/\[ACTION:({.*?})\]/);
-      if(am){try{const a=JSON.parse(am[1]);onBotAction(a.botId,a.action);}catch(e){}}
-      setMsgs(p=>[...p,{role:"assistant",content:reply.replace(/\[ACTION:.*?\]/g,"").trim()}]);
-    }catch(e){setMsgs(p=>[...p,{role:"assistant",content:"System error, sir."}]);}
-    setLoading(false);
-  },[msgs,loading,bots,self,onBotAction]);
-
-  return (
-    <div style={{height:"100%",display:"flex",flexDirection:"column"}}>
-      <div style={{flex:1,overflowY:"auto",paddingBottom:8}}>
-        {msgs.map((m,i)=>(
-          <div key={i} className={`msg ${m.role==="user"?"user":""}`}>
-            <div className="msg-av">{m.role==="user"?"K":"J"}</div>
-            <div className="msg-bubble">{m.content}</div>
-          </div>
-        ))}
-        {loading&&<div className="msg"><div className="msg-av">J</div><div className="msg-bubble"><div className="think"><span/><span/><span/></div></div></div>}
-        <div ref={bottomRef}/>
-      </div>
-      <div style={{display:"flex",gap:6,alignItems:"flex-end",paddingTop:10,borderTop:"1px solid var(--bd)"}}>
-        <textarea className="chat-input" rows={1} placeholder="Command Jarvis..." value={input}
-          onChange={e=>setInput(e.target.value)}
-          onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send(input);}}}/>
-        <button className="send-btn" disabled={!input.trim()||loading} onClick={()=>send(input)}>➤</button>
-      </div>
-    </div>
-  );
+function deployBot(){
+  const name=document.getElementById('nb-name')?.value?.trim();
+  const plat=document.getElementById('nb-plat')?.value?.trim();
+  if(!name||!plat) return;
+  const types={trading:{e:'📈',c:'#ffd166',bg:'rgba(255,209,102,0.12)'},social:{e:'🦅',c:'#c77dff',bg:'rgba(199,125,255,0.12)'},service:{e:'🤝',c:'#06ffa5',bg:'rgba(6,255,165,0.12)'},scraper:{e:'🕷️',c:'#ff9f1c',bg:'rgba(255,159,28,0.12)'}};
+  const t=types[state.newBotType||'trading'];
+  state.bots.push({id:Date.now(),name:name.toUpperCase(),type:(state.newBotType||'trading').toUpperCase(),emoji:t.e,status:'stopped',platform:plat,desc:'New bot',health:0,color:t.c,bg:t.bg,stats:[{v:'0',l:'Tasks'},{v:'0',l:'Runs'},{v:'0',l:'Errors'}]});
+  state.alerts.unshift({id:Date.now(),icon:'🚀',text:`Deployed: ${name.toUpperCase()}`,time:'just now'});
+  setTab('dash');
 }
 
-function SelfTab(){
-  const [sub,setSub]=useState("body");
-  const [mood,setMood]=useState("");
-  const [steps,setSteps]=useState(6400);
-  const [water,setWater]=useState(1.5);
-  const [medStreak,setMedStreak]=useState(7);
-  const [intention,setIntention]=useState("");
-  const [journal,setJournal]=useState([]);
-  const [gratitude,setGratitude]=useState([]);
-  const [journalInput,setJournalInput]=useState("");
-  const [gratInput,setGratInput]=useState("");
-  const [affIdx,setAffIdx]=useState(0);
-  const [refIdx,setRefIdx]=useState(0);
-  const [habits,setHabits]=useState([
-    {name:"COLD SHOWER",emoji:"🚿",done:false,streak:5},
-    {name:"NO PHONE AM",emoji:"📵",done:true,streak:3},
-    {name:"READ 20MIN",emoji:"📚",done:false,streak:12},
-    {name:"EXERCISE",emoji:"💪",done:true,streak:8},
-    {name:"MEDITATE",emoji:"🧘",done:false,streak:2},
-    {name:"JOURNAL",emoji:"✍️",done:false,streak:1},
-  ]);
-
-  const subtabs=[{k:"body",l:"💪 BODY"},{k:"mind",l:"🧠 MIND"},{k:"spirit",l:"✨ SPIRIT"}];
-
-  return (
-    <div>
-      <div style={{display:"flex",gap:4,marginBottom:12}}>
-        {subtabs.map(s=>(
-          <div key={s.k} onClick={()=>setSub(s.k)} style={{flex:1,padding:"7px 4px",textAlign:"center",borderRadius:7,cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:9,letterSpacing:1,background:sub===s.k?"rgba(199,125,255,0.12)":"var(--c4)",border:`1px solid ${sub===s.k?"rgba(199,125,255,0.5)":"var(--bd)"}`,color:sub===s.k?"var(--violet)":"var(--txt2)",transition:"all 0.2s"}}>
-            {s.l}
-          </div>
-        ))}
-      </div>
-
-      {sub==="body"&&(
-        <div>
-          <div className="card">
-            <div className="sec-title">STEPS TODAY</div>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontFamily:"'Orbitron',monospace",fontSize:28,fontWeight:700,color:"var(--green)"}}>{(steps/1000).toFixed(1)}k</div>
-                <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)"}}>/ 10k goal</div>
-              </div>
-              <div style={{flex:1}}>
-                <div className="bar"><div className="bar-fill" style={{width:`${Math.min(steps/10000*100,100)}%`,background:"var(--green)"}}/></div>
-                <div style={{display:"flex",gap:8,marginTop:8}}>
-                  <button onClick={()=>setSteps(Math.max(0,steps-1000))} style={{flex:1,padding:6,borderRadius:6,border:"1px solid var(--bd)",background:"var(--c4)",color:"var(--c)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:12}}>−1k</button>
-                  <button onClick={()=>setSteps(steps+1000)} style={{flex:1,padding:6,borderRadius:6,border:"1px solid var(--bd)",background:"var(--c4)",color:"var(--c)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:12}}>+1k</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="sec-title">WATER INTAKE</div>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{fontFamily:"'Orbitron',monospace",fontSize:28,fontWeight:700,color:"var(--sky)"}}>{water}L</div>
-              <div style={{flex:1}}>
-                <div className="bar"><div className="bar-fill" style={{width:`${Math.min(water/2.5*100,100)}%`,background:"var(--sky)"}}/></div>
-                <div style={{fontSize:9,color:"var(--txt2)",fontFamily:"'Share Tech Mono',monospace",marginTop:4}}>{water>=2.5?"🎯 Goal reached!":` ${(2.5-water).toFixed(1)}L remaining`}</div>
-                <div style={{display:"flex",gap:8,marginTop:6}}>
-                  <button onClick={()=>setWater(Math.max(0,parseFloat((water-0.25).toFixed(2))))} style={{flex:1,padding:6,borderRadius:6,border:"1px solid var(--bd)",background:"var(--c4)",color:"var(--c)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:10}}>−250ml</button>
-                  <button onClick={()=>setWater(parseFloat((water+0.25).toFixed(2)))} style={{flex:1,padding:6,borderRadius:6,border:"1px solid var(--bd)",background:"var(--c4)",color:"var(--c)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:10}}>+250ml</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {sub==="mind"&&(
-        <div>
-          <div className="card" style={{borderColor:"rgba(199,125,255,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(199,125,255,0.8)"}}>MOOD CHECK-IN</div>
-            <div style={{display:"flex",flexWrap:"wrap"}}>
-              {[["😤","Fired Up"],["😌","Calm"],["😊","Good"],["😐","Neutral"],["😔","Low"],["🔥","Motivated"],["😴","Tired"],["😤","Stressed"]].map(([e,l])=>(
-                <div key={l} className={`mood-pill ${mood===l?"sel":""}`} onClick={()=>setMood(l)}>{e} <span style={{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:"var(--txt2)"}}>{l}</span></div>
-              ))}
-            </div>
-            {mood&&<div style={{marginTop:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:"var(--violet)"}}>Current: {mood}</div>}
-          </div>
-          <div className="card" style={{borderColor:"rgba(199,125,255,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(199,125,255,0.8)"}}>DAILY HABITS</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:6}}>
-              {habits.map((h,i)=>(
-                <div key={i} className={`habit-item ${h.done?"done":""}`} onClick={()=>{const n=[...habits];n[i]={...n[i],done:!n[i].done};setHabits(n);}}>
-                  <div style={{fontSize:20,marginBottom:3}}>{h.emoji}</div>
-                  <div style={{fontFamily:"'Orbitron',monospace",fontSize:9,color:"var(--txt)"}}>{h.name}</div>
-                  <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)",marginTop:2}}>🔥 {h.streak} streak</div>
-                  {h.done&&<div style={{position:"absolute",top:6,right:8,fontSize:11,color:"var(--green)"}}>✓</div>}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="card" style={{borderColor:"rgba(199,125,255,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(199,125,255,0.8)"}}>JOURNAL</div>
-            <div style={{fontSize:11,color:"var(--violet)",fontStyle:"italic",marginBottom:8,padding:"8px 10px",background:"rgba(199,125,255,0.07)",borderRadius:7,border:"1px solid rgba(199,125,255,0.2)"}}>
-              💭 {REFLECTIONS[refIdx]}
-              <div style={{marginTop:4,cursor:"pointer",fontSize:9,color:"rgba(199,125,255,0.6)"}} onClick={()=>setRefIdx((refIdx+1)%REFLECTIONS.length)}>next prompt →</div>
-            </div>
-            <div style={{display:"flex",gap:6}}>
-              <input className="log-input" placeholder="Write your thoughts..." value={journalInput} onChange={e=>setJournalInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&journalInput.trim()){setJournal(p=>[{text:journalInput,date:dateNow()},...p.slice(0,4)]);setJournalInput("");}}}/>
-              <div className="log-btn" style={{background:"rgba(199,125,255,0.1)",borderColor:"rgba(199,125,255,0.4)",color:"var(--violet)"}} onClick={()=>{if(journalInput.trim()){setJournal(p=>[{text:journalInput,date:dateNow()},...p.slice(0,4)]);setJournalInput("");}}}>SAVE</div>
-            </div>
-            {journal.map((j,i)=>(
-              <div key={i} style={{background:"var(--c4)",border:"1px solid rgba(199,125,255,0.2)",borderRadius:7,padding:"8px 10px",marginTop:6}}>
-                <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)",marginBottom:3}}>{j.date}</div>
-                <div style={{fontSize:12,color:"var(--txt)"}}>{j.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {sub==="spirit"&&(
-        <div>
-          <div className="affirm-card">
-            <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:8,letterSpacing:2,color:"rgba(199,125,255,0.6)",marginBottom:8}}>✨ TODAY'S AFFIRMATION</div>
-            <div style={{fontSize:14,lineHeight:1.6,color:"var(--txt)",fontStyle:"italic"}}>"{AFFIRMATIONS[affIdx]}"</div>
-            <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--violet)",cursor:"pointer",marginTop:8,display:"inline-block",border:"1px solid rgba(199,125,255,0.3)",padding:"3px 10px",borderRadius:4,background:"rgba(199,125,255,0.07)"}} onClick={()=>setAffIdx((affIdx+1)%AFFIRMATIONS.length)}>↻ NEW</div>
-          </div>
-          <div className="card" style={{borderColor:"rgba(255,107,157,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(255,107,157,0.8)"}}>DAILY INTENTION</div>
-            <input className="log-input" style={{width:"100%"}} placeholder="Today I intend to..." value={intention} onChange={e=>setIntention(e.target.value)}/>
-            {intention&&<div style={{marginTop:8,padding:"8px 10px",background:"rgba(255,107,157,0.07)",border:"1px solid rgba(255,107,157,0.25)",borderRadius:7,fontSize:12,color:"var(--txt)",fontStyle:"italic"}}>🎯 "{intention}"</div>}
-          </div>
-          <div className="card" style={{borderColor:"rgba(255,107,157,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(255,107,157,0.8)"}}>MEDITATION STREAK</div>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{fontFamily:"'Orbitron',monospace",fontSize:36,fontWeight:700,color:"var(--rose)"}}>{medStreak}</div>
-              <div>
-                <div style={{fontSize:11,color:"var(--txt2)"}}>days consecutive</div>
-                <div style={{fontSize:10,color:"var(--rose)",marginTop:2}}>{medStreak<7?"Building momentum":"Outstanding discipline, sir."}</div>
-                <div style={{display:"flex",gap:6,marginTop:6}}>
-                  <button onClick={()=>setMedStreak(p=>p+1)} style={{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(255,107,157,0.4)",background:"rgba(255,107,157,0.1)",color:"var(--rose)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:9}}>✓ LOG</button>
-                  <button onClick={()=>setMedStreak(p=>Math.max(0,p-1))} style={{padding:"5px 8px",borderRadius:6,border:"1px solid var(--bd)",background:"var(--c4)",color:"var(--txt2)",cursor:"pointer",fontFamily:"'Orbitron',monospace",fontSize:9}}>−</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card" style={{borderColor:"rgba(255,107,157,0.3)"}}>
-            <div className="sec-title" style={{color:"rgba(255,107,157,0.8)"}}>GRATITUDE LOG</div>
-            <div style={{display:"flex",gap:6}}>
-              <input className="log-input" placeholder="Today I'm grateful for..." value={gratInput} onChange={e=>setGratInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&gratInput.trim()){setGratitude(p=>[{text:gratInput,date:dateNow()},...p.slice(0,4)]);setGratInput("");}}}/>
-              <div className="log-btn" style={{background:"rgba(255,107,157,0.1)",borderColor:"rgba(255,107,157,0.4)",color:"var(--rose)"}} onClick={()=>{if(gratInput.trim()){setGratitude(p=>[{text:gratInput,date:dateNow()},...p.slice(0,4)]);setGratInput("");}}}>ADD</div>
-            </div>
-            {gratitude.map((g,i)=>(
-              <div key={i} style={{background:"var(--c4)",border:"1px solid rgba(255,107,157,0.2)",borderRadius:7,padding:"8px 10px",marginTop:6}}>
-                <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)",marginBottom:3}}>{g.date}</div>
-                <div style={{fontSize:12,color:"var(--txt)"}}>🙏 {g.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+async function sendMsg(){
+  const inp=document.getElementById('chat-inp');
+  if(!inp||!inp.value.trim()||state.aiLoading) return;
+  const text=inp.value.trim();
+  inp.value='';
+  state.msgs.push({role:'u',text});
+  state.aiLoading=true;
+  render();
+  try{
+    const sys=`You are J.A.R.V.I.S. Bot fleet: ${JSON.stringify(state.bots.map(b=>({name:b.name,status:b.status})))}. Mood: ${state.mood||'unknown'}. Address user as "sir". Be concise. To control a bot end with [ACTION:{"botId":N,"action":"start|pause|stop"}]`;
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:state.msgs.filter(m=>m.role!=='j').map(m=>({role:m.role==='u'?'user':'assistant',content:m.text}))})});
+    const d=await r.json();
+    const reply=d.content?.map(b=>b.text||'').join('')||'Systems unavailable, sir.';
+    const am=reply.match(/\[ACTION:({.*?})\]/);
+    if(am){try{const a=JSON.parse(am[1]);botCtrl(a.botId,a.action);}catch(e){}}
+    state.msgs.push({role:'j',text:reply.replace(/\[ACTION:.*?\]/g,'').trim()});
+  }catch(e){state.msgs.push({role:'j',text:'System error, sir.'});}
+  state.aiLoading=false;
+  render();
 }
 
-function CreateBot({onAdd}){
-  const [form,setForm]=useState({name:"",type:"trading",platform:"",desc:""});
-  const types=[{k:"trading",e:"📈",c:"#ffd166"},{k:"social",e:"🦅",c:"#c77dff"},{k:"service",e:"🤝",c:"#06ffa5"},{k:"scraper",e:"🕷️",c:"#ff9f1c"}];
-  return (
-    <div>
-      <div className="sec-title">DEPLOY NEW BOT</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:6,marginBottom:10}}>
-        {types.map(t=>(
-          <div key={t.k} onClick={()=>setForm(p=>({...p,type:t.k}))} style={{padding:10,borderRadius:8,border:`1px solid ${form.type===t.k?"var(--bd2)":"var(--bd)"}`,background:form.type===t.k?"var(--c3)":"var(--c4)",cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
-            <div style={{fontSize:20,marginBottom:4}}>{t.e}</div>
-            <div style={{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:t.c}}>{t.k.toUpperCase()}</div>
-          </div>
-        ))}
-      </div>
-      <div className="field"><label>BOT NAME</label><input placeholder="e.g. MOMENTUM SCALPER" value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))}/></div>
-      <div className="field"><label>PLATFORM</label><input placeholder="e.g. Freqtrade, ManyChat" value={form.platform} onChange={e=>setForm(p=>({...p,platform:e.target.value}))}/></div>
-      <div className="field"><label>DESCRIPTION</label><textarea placeholder="What does this bot do?" value={form.desc} onChange={e=>setForm(p=>({...p,desc:e.target.value}))}/></div>
-      <button className="submit-btn" onClick={()=>{
-        if(!form.name.trim()||!form.platform.trim())return;
-        const t=types.find(t=>t.k===form.type);
-        onAdd({id:Date.now(),name:form.name.toUpperCase(),type:form.type,emoji:t.e,status:"stopped",platform:form.platform,desc:form.desc||"New bot",health:0,color:t.c,bg:`rgba(${t.k==="trading"?"255,209,102":t.k==="social"?"199,125,255":t.k==="service"?"6,255,165":"255,159,28"},0.12)`,stats:[{v:"0",l:"Tasks"},{v:"0",l:"Runs"},{v:"0",l:"Errors"}]});
-        setForm({name:"",type:"trading",platform:"",desc:""});
-      }}>⚡ DEPLOY BOT</button>
-    </div>
-  );
-}
-
-export default function App(){
-  const [tab,setTab]=useState("dash");
-  const [bots,setBots]=useState(INIT_BOTS);
-  const [alerts,setAlerts]=useState(INIT_ALERTS);
-  const [time,setTime]=useState(timeNow());
-  const [selfData]=useState({mood:"",steps:6400,medStreak:7});
-
-  useEffect(()=>{const t=setInterval(()=>setTime(timeNow()),10000);return()=>clearInterval(t);},[]);
-
-  const handleControl=useCallback((id,action)=>{
-    setBots(p=>p.map(b=>{
-      if(b.id!==id)return b;
-      const n={...b};
-      if(action==="start"){n.status="running";n.health=Math.max(n.health,40);}
-      if(action==="pause")n.status="paused";
-      if(action==="stop"){n.status="stopped";n.health=0;}
-      return n;
-    }));
-    const bot=bots.find(b=>b.id===id);
-    if(bot){
-      const icons={start:"▶️",pause:"⏸️",stop:"⏹️"};
-      const labels={start:"started",pause:"paused",stop:"stopped"};
-      setAlerts(p=>[{id:Date.now(),icon:icons[action],text:`${bot.name} ${labels[action]}.`,time:"just now",col:action==="start"?"rgba(6,255,165,0.3)":action==="pause"?"rgba(255,183,3,0.3)":"rgba(255,77,109,0.3)"},...p.slice(0,9)]);
-    }
-  },[bots]);
-
-  const navItems=[{k:"dash",i:"⬡",l:"HQ"},{k:"brain",i:"◈",l:"JARVIS"},{k:"self",i:"◉",l:"SELF"},{k:"create",i:"⊕",l:"DEPLOY"},{k:"alerts",i:"△",l:"ALERTS"}];
-  const running=bots.filter(b=>b.status==="running").length;
-
-  return (
-    <div className="shell">
-      <div className="scanline"/>
-      <div className="hdr">
-        <div className="logo">J.A.R.V.I.S.</div>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <div className="hdr-badge">{time} · {dateNow()}</div>
-          <div style={{display:"flex",alignItems:"center",gap:5,fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:"var(--txt2)"}}>
-            <div className="dot-on"/>
-            {running}/{bots.length}
-          </div>
-        </div>
-      </div>
-      <div className="tabs">
-        {navItems.map(n=>(
-          <div key={n.k} className={`tab ${tab===n.k?"active":""}`} onClick={()=>setTab(n.k)}>
-            {n.i} {n.l}
-          </div>
-        ))}
-      </div>
-      <div className="content">
-        {tab==="dash"&&<Dashboard bots={bots} alerts={alerts} onControl={handleControl}/>}
-        {tab==="brain"&&<BrainTab bots={bots} onBotAction={handleControl} self={selfData}/>}
-        {tab==="self"&&<SelfTab/>}
-        {tab==="create"&&<CreateBot onAdd={bot=>{setBots(p=>[...p,bot]);setAlerts(p=>[{id:Date.now(),icon:"🚀",text:`New bot deployed: ${bot.name}`,time:"just now",col:"rgba(6,255,165,0.3)"},...p.slice(0,9)]);setTab("dash");}}/>}
-        {tab==="alerts"&&(
-          <div>
-            <div className="sec-title">SYSTEM ALERTS</div>
-            {alerts.map(a=>(
-              <div key={a.id} className="alert-item" style={{borderColor:a.col}}>
-                <div style={{fontSize:13,flexShrink:0}}>{a.icon}</div>
-                <div><div className="alert-text">{a.text}</div><div className="alert-time">{a.time}</div></div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:15,display:"flex",borderTop:"1px solid var(--bd)",background:"rgba(3,13,11,0.95)",backdropFilter:"blur(14px)"}}>
-        {navItems.map(n=>(
-          <button key={n.k} onClick={()=>setTab(n.k)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"10px 4px 12px",cursor:"pointer",fontFamily:"'Share Tech Mono',monospace",fontSize:8,letterSpacing:1,color:tab===n.k?"var(--c)":"var(--txt2)",background:"none",border:"none",transition:"color 0.2s"}}>
-            <span style={{fontSize:18,filter:tab===n.k?"drop-shadow(0 0 6px var(--c))":"none"}}>{n.i}</span>
-            {n.l}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+// ── Init ───────────────────────────────────────────────────────────
+render();
 </script>
 </body>
 </html>
